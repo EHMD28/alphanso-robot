@@ -100,35 +100,73 @@ constexpr uint8_t BACK_RIGHT_CHANNEL = 4;
 
 /* -------- Drivetrain -------- */
 /* The last argument to each constructor is whether or not the motor is reversed. */
-MotorChannel front_left = MotorChannel(DRIVER1_AIN1_PIN, DRIVER1_AIN2_PIN, DRIVER1_PWMA_PIN,
+MotorChannel front_left_motor = MotorChannel(DRIVER1_AIN1_PIN, DRIVER1_AIN2_PIN, DRIVER1_PWMA_PIN,
                                         FRONT_LEFT_CHANNEL, true);
-MotorChannel back_left = MotorChannel(DRIVER1_BIN1_PIN, DRIVER1_BIN2_PIN, DRIVER1_PWMB_PIN,
+MotorChannel back_left_motor = MotorChannel(DRIVER1_BIN1_PIN, DRIVER1_BIN2_PIN, DRIVER1_PWMB_PIN,
                                         BACK_LEFT_CHANNEL, true);
-MotorChannel front_right = MotorChannel(DRIVER2_AIN1_PIN, DRIVER2_AIN2_PIN, DRIVER2_PWMA_PIN,
+MotorChannel front_right_motor = MotorChannel(DRIVER2_AIN1_PIN, DRIVER2_AIN2_PIN, DRIVER2_PWMA_PIN,
                                         FRONT_RIGHT_CHANNEL, false);
-MotorChannel back_right = MotorChannel(DRIVER2_BIN1_PIN, DRIVER2_BIN2_PIN, DRIVER2_PWMB_PIN,
+MotorChannel back_right_motor = MotorChannel(DRIVER2_BIN1_PIN, DRIVER2_BIN2_PIN, DRIVER2_PWMB_PIN,
                                         BACK_RIGHT_CHANNEL, true);
-                                        
+
+/**
+ * Drive the robot using inputs from a joystick.
+ * 
+ * @param fwd The speed of the robot in the forwards-backwards direction.
+ * Forwards is positive, backwards is negative. Range: [-1.0, 1.0].
+ * @param strafe The speed of the robot in the side-to-side direction.
+ * Right is positive, left is negative. Range: [-1.0, 1.0].
+ * @param rot The speed to rotate the robot. Clockwise is positive (TODO: Check
+ * this). Range: [-1.0, 1.0].
+ */
+void drive(double fwd, double strafe, double rot) {
+    // Front left motor power
+    double fl = fwd + rot + strafe;
+    // Front right motor power
+    double fr = fwd - rot - strafe;
+    // Back left motor power
+    double bl = fwd + rot - strafe;
+    // Back right motor power
+    double br = fwd - rot + strafe;
+    /* Normalize motor powers if any of them exceed 1.0 in magnitude. */
+    double max_val = max({abs(fl), abs(fr), abs(bl), abs(br)});
+    if (max_val > 1.0) {
+        fl /= max_val;
+        fr /= max_val;
+        bl /= max_val;
+        br /= max_val;
+    }
+    /* Convert from percentages to duty cycles */
+    int16_t fl_speed = fl * MAX_MOTOR_PWM;
+    int16_t fr_speed = fr * MAX_MOTOR_PWM;
+    int16_t bl_speed = bl * MAX_MOTOR_PWM;
+    int16_t br_speed = br * MAX_MOTOR_PWM;
+    /* Drive each motor */
+    front_left_motor.driveMotor(fl_speed);
+    front_right_motor.driveMotor(fr_speed);
+    back_left_motor.driveMotor(bl_speed);
+    back_right_motor.driveMotor(br_speed);
+}
+
 void setup() {
     pinMode(STATUS_LED_PIN, OUTPUT);
-    // digitalWrite(STATUS_LED_PIN, HIGH);
+    digitalWrite(STATUS_LED_PIN, HIGH);
 }
 
 void test_drive() {
-    front_left.driveMotor(100);
+    front_left_motor.driveMotor(100);
     delay(SHORT_DELAY);
-    front_left.stopMotor();
-    front_right.driveMotor(100);
+    front_left_motor.stopMotor();
+    front_right_motor.driveMotor(100);
     delay(SHORT_DELAY);
-    front_right.stopMotor();
-    back_right.driveMotor(100);
+    front_right_motor.stopMotor();
+    back_right_motor.driveMotor(100);
     delay(SHORT_DELAY);
-    back_right.stopMotor();
-    back_left.driveMotor(100);
+    back_right_motor.stopMotor();
+    back_left_motor.driveMotor(100);
     delay(SHORT_DELAY);
-    back_left.stopMotor();
+    back_left_motor.stopMotor();
 }
 
 void loop() {
-    test_drive();
 }

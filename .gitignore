@@ -1,4 +1,4 @@
-# KiCad
+# ---- KiCad ----
 # Temporary files
 *.000
 *.bak
@@ -36,7 +36,7 @@ fp-info-cache
 # Local project settings
 *.kicad_prl
 
-# PlatformIO
+# ----- PlatformIO -----
 .pio
 .pioenvs
 .piolibdeps
