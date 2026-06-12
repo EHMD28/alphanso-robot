@@ -102,13 +102,13 @@ constexpr uint8_t BACK_RIGHT_CHANNEL = 4;
 /* -------- Drivetrain -------- */
 /* The last argument to each constructor is whether or not the motor is reversed. */
 MotorChannel front_left_motor = MotorChannel(DRIVER1_AIN1_PIN, DRIVER1_AIN2_PIN, DRIVER1_PWMA_PIN,
-                                        FRONT_LEFT_CHANNEL, true);
+                                        FRONT_LEFT_CHANNEL, false);
 MotorChannel back_left_motor = MotorChannel(DRIVER1_BIN1_PIN, DRIVER1_BIN2_PIN, DRIVER1_PWMB_PIN,
-                                        BACK_LEFT_CHANNEL, true);
+                                        BACK_LEFT_CHANNEL, false);
 MotorChannel front_right_motor = MotorChannel(DRIVER2_AIN1_PIN, DRIVER2_AIN2_PIN, DRIVER2_PWMA_PIN,
-                                        FRONT_RIGHT_CHANNEL, false);
+                                        FRONT_RIGHT_CHANNEL, true);
 MotorChannel back_right_motor = MotorChannel(DRIVER2_BIN1_PIN, DRIVER2_BIN2_PIN, DRIVER2_PWMB_PIN,
-                                        BACK_RIGHT_CHANNEL, true);
+                                        BACK_RIGHT_CHANNEL, false);
 
 /**
  * Drive the robot using inputs from a joystick.
@@ -196,7 +196,8 @@ void loop() {
     double lx = (double) apply_deadband(raw_lx) / MAX_JOYSTICK_INPUT;
     double ly = (double) apply_deadband(raw_ly) / MAX_JOYSTICK_INPUT;
     double rx = (double) apply_deadband(raw_rx) / MAX_JOYSTICK_INPUT;
-    /* Drive robot using the controller inputs. Left joystick controls translation, right joystick controls rotation. */
+    /* Drive robot using the controller inputs. Left joystick controls translation,
+    right joystick controls rotation. */
     drive(ly, lx, rx);
     delay(100);
 }
