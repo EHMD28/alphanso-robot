@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <PS4Controller.h>
 
 /* -------- Motor Utilities -------- */
 
@@ -148,11 +149,6 @@ void drive(double fwd, double strafe, double rot) {
     back_right_motor.driveMotor(br_speed);
 }
 
-void setup() {
-    pinMode(STATUS_LED_PIN, OUTPUT);
-    digitalWrite(STATUS_LED_PIN, HIGH);
-}
-
 void test_drive() {
     front_left_motor.driveMotor(100);
     delay(SHORT_DELAY);
@@ -168,5 +164,39 @@ void test_drive() {
     back_left_motor.stopMotor();
 }
 
+/* -------- Controller -------- */
+// This is the of the device the controller is paired with (not the controller itself).
+const char* PS4_MAC_ADDRESS = "44:85:00:A0:09:0F";
+// Through my testing, all values in the range of [-10, 10] (out of [-128, 127]) can be ignored as stick drift.
+constexpr int8_t JOYSTICK_DEADBAND = 10;
+constexpr int8_t MAX_JOYSTICK_INPUT = 128;
+
+int8_t apply_deadband(int8_t input) {
+    return (abs(input) <= JOYSTICK_DEADBAND) ? 0 : input;
+}
+
+void setup() {
+    pinMode(STATUS_LED_PIN, OUTPUT);
+    PS4.begin(PS4_MAC_ADDRESS);    
+    while (!PS4.isConnected()) {
+        digitalWrite(STATUS_LED_PIN, HIGH);
+        delay(500);
+        digitalWrite(STATUS_LED_PIN, LOW);
+        delay(500);
+    }
+    digitalWrite(STATUS_LED_PIN, HIGH);
+}
+
 void loop() {
+    /* Raw joystick input values. Right is +x, left is +y, and range is [-128, 127]. */
+    int8_t raw_lx = PS4.LStickX();
+    int8_t raw_ly = PS4.LStickY();
+    int8_t raw_rx = PS4.RStickX();
+    /* Convert raw inputs into percentages on the interval [-1.0, 1.0]. */
+    double lx = (double) apply_deadband(raw_lx) / MAX_JOYSTICK_INPUT;
+    double ly = (double) apply_deadband(raw_ly) / MAX_JOYSTICK_INPUT;
+    double rx = (double) apply_deadband(raw_rx) / MAX_JOYSTICK_INPUT;
+    /* Drive robot using the controller inputs. Left joystick controls translation, right joystick controls rotation. */
+    drive(ly, lx, rx);
+    delay(100);
 }
