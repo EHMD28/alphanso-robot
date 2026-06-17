@@ -192,12 +192,12 @@ void loop() {
     int8_t raw_lx = PS4.LStickX();
     int8_t raw_ly = PS4.LStickY();
     int8_t raw_rx = PS4.RStickX();
-    /* Convert raw inputs into percentages on the interval [-1.0, 1.0]. */
+    /* Map raw inputs into percentages onto the interval [-1.0, 1.0]. */
     double lx = (double) apply_deadband(raw_lx) / MAX_JOYSTICK_INPUT;
     double ly = (double) apply_deadband(raw_ly) / MAX_JOYSTICK_INPUT;
     double rx = (double) apply_deadband(raw_rx) / MAX_JOYSTICK_INPUT;
     /* Drive robot using the controller inputs. Left joystick controls translation,
     right joystick controls rotation. */
-    drive(ly, lx, rx);
+    drive(ly, lx, -rx);
     delay(100);
 }
