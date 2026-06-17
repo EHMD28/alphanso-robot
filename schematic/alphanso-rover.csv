@@ -1,0 +1,8 @@
+"Reference","Qty","Value","DNP","Exclude from BOM","Exclude from Board","Footprint","Datasheet"
+"BT1","1","7.7 V","","","","","~"
+"D1","1","Red","","","","","~"
+"M1,M2,M3,M4","4","TT Motor (Adafruit #3777)","","","","","~"
+"R1","1","470Ω","","","","","~"
+"U1","1","ESP32-DEVKIT-V1","","","","ESP32-DEVKIT-V1:MODULE_ESP32_DEVKIT_V1",""
+"U2,U3","2","TB6612FNG","","","","Package_SO:SSOP-24_5.3x8.2mm_P0.65mm","https://toshiba.semicon-storage.com/us/product/linear/motordriver/detail.TB6612FNG.html"
+"U4","1","LM2596S-5","","","","Package_TO_SOT_SMD:TO-263-5_TabPin3","http://www.ti.com/lit/ds/symlink/lm2596.pdf"
