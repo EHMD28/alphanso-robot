@@ -4,7 +4,7 @@ Alphanso is first robot I designed and created on my own (hence the name). Alpha
 
 ## Setup
 
-The chassis for Alphanso was 3D printed. Since it's wide and flat, it would have made more sense to cut it out of another material, but I didn't have any of the necessary tools on hand. The CAD model for the chassis is available on Onshape [here](https://cad.onshape.com/documents/276a8e7378f0b6225af4305d/w/07466e83f2c78b557cda318c/e/847e4e1f577a4bce06d5f762?renderMode=0&uiState=6a31f9fdfc247f6640c2fb50).
+The chassis for Alphanso was 3D printed. Since it's wide and flat, it would have made more sense to cut it out of another material, but I didn't have any of the necessary tools on hand. The CAD model for the chassis is available on Onshape [here](https://cad.onshape.com/documents/276a8e7378f0b6225af4305d/w/07466e83f2c78b557cda318c/e/847e4e1f577a4bce06d5f762?renderMode=0&uiState=6a31f9fdfc247f6640c2fb50), and the full assembly is available [here](https://cad.onshape.com/documents/276a8e7378f0b6225af4305d/w/07466e83f2c78b557cda318c/e/763026777684ef0bfcde7d5e?renderMode=0&leftPanel=false&uiState=6a35d3e79174c0de62a359de).
 
 ### Bill of Materials
 
